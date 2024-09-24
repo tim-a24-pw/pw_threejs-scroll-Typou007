@@ -1,0 +1,4 @@
+npm install gsap
+npm i
+npm install swiper
+npm install --save three

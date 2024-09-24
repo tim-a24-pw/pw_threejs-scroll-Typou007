@@ -16,16 +16,25 @@ export default class Experience {
 
   init() {
     window.addEventListener('resize', this.resize.bind(this));
+    const observer = new IntersectionObserver(this.observe.bind(this), {
+      rootMargin: '-45% 0px',
+    });
 
     this.createCamera();
     this.createObjects();
     this.createRenderer();
     this.animate();
+
+    const experiences = document.querySelectorAll('.js-experience');
+    for (let i = 0; i < experiences.length; i++) {
+      const element = experiences[i];
+      observer.observe(element);
+    }
   }
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(
-      75,
+      45,
       this.sizes.width / this.sizes.height
     );
     this.camera.position.z = 8;
@@ -35,6 +44,7 @@ export default class Experience {
   createRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
+      alpha: true,
     });
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -74,5 +84,15 @@ export default class Experience {
     this.cube.rotation.y = 0.5 * elapsedTime;
 
     window.requestAnimationFrame(this.animate.bind(this));
+  }
+  observe(entries) {
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i];
+      const target = entry.target;
+
+      if (entry.isIntersecting) {
+        console.log(target);
+      }
+    }
   }
 }
